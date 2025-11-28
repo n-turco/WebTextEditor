@@ -1,2 +1,32 @@
 ﻿body {
+    background-color: cornsilk;
+}
+
+#notePad {
+    width: 1550px;
+    height: 535px;
+    margin-left: 0px;
+    margin-top: 20px;
+    resize: none;
+    font-family:Roboto;
+}
+
+#labelFileName {
+    width: 200px;
+    margin: 100px;
+}
+
+#textFileList {
+    width: 231px;
+    margin-left: 15px;
+}
+
+#saveBtn {
+    width: 100px;
+    margin: 30px;
+}
+
+#saveAsBtn {
+    width: 100px;
+    margin: 30px;
 }
