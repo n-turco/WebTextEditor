@@ -1,32 +1,67 @@
 ﻿body {
-    background-color: cornsilk;
+    background-color: darkseagreen;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-weight: bold;
+    color: floralwhite;
+    text-align: center;
+    padding: 20px 0;
+}
+.navigationBar {
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background-color: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    margin: 0 20px;
+}
+
+.description {
+    font-weight: bold;
 }
 
 #notePad {
-    width: 1550px;
-    height: 535px;
-    margin-left: 0px;
-    margin-top: 20px;
+    width: 90%;
+    height: 550px;
+    margin: 0 auto;
+    display: block;
     resize: none;
-    font-family:Roboto;
+    padding: 15px;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
 }
 
 #labelFileName {
     width: 200px;
-    margin: 100px;
+    margin-left: 10px;
+    margin-right: 150px
 }
 
 #textFileList {
-    width: 231px;
-    margin-left: 15px;
+    width: 230px;
 }
 
-#saveBtn {
-    width: 100px;
-    margin: 30px;
+.navBtn {
+    padding: 5px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    font-weight: bold;
 }
 
-#saveAsBtn {
-    width: 100px;
-    margin: 30px;
+#statusBar {
+    width: 200px;
+    margin: 100px;
+    font-style:italic;
+}
+
+.pageDivide {
+    width: 95%;
+    margin: 20px auto;
 }
