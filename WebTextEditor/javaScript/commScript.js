@@ -71,8 +71,9 @@ function openSelectedFile() {
             document.getElementById("labelFileName").innerText = fileName;
         },
         //display error if unable to load file
-        error: function () {
-            document.getElementById("statusBar").innerText = "Failed to load file.";
+        error: function (data) {
+            let response = data.d;
+            document.getElementById("statusBar").innerText = "Failed to load file." + response.description;
         }
     });
 }
@@ -100,10 +101,37 @@ function saveSelectedFile() {
 
         success: function (data) {
             let response = data.d;
-            document.getElementById("statusBar").innerText = "File successfully saved.";
+            document.getElementById("statusBar").innerText = "File successfully saved." + response.description;
         },
-        error: function () {
-            document.getElementById("statusBar").innerText = "Failed to save file.";
+        error: function (data) {
+            let response = data.d;
+            document.getElementById("statusBar").innerText = "Failed to save file." + response.description;
+        }
+    });
+}
+function SaveAsNewFile() {
+    var newFileName = document.getElementById("newFileName").value;
+    if (!newFileName || newFileName.trim() === "") {
+        document.getElementById("statusBar").innerText = "File name cannot be blank.";
+        return;
+    }
+    
+    var fileContent = document.getElementById("notePad").value;
+    $.ajax({
+        type: "POST",
+        url: "startPage.aspx/saveNewFile",
+        data: JSON.stringify({ fileName: newFileName, textContent: fileContent }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (data) {
+            let response = data.d;
+            document.getElementById("labelFileName").innerText = newFileName;
+            document.getElementById("statusBar").innerText = "File successfully saved." + response.description;
+        },
+        error: function (data) {
+            let response = data.d;
+            document.getElementById("statusBar").innerText = "Failed to save file." + response.description;
         }
     });
 }

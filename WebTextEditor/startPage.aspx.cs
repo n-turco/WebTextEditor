@@ -63,6 +63,7 @@ namespace WebTextEditor
             string fullPath;
             string fileContents;
 
+
             try
             {
                 //build full path to selected file
@@ -72,7 +73,7 @@ namespace WebTextEditor
                 //check if file exists
                 if (File.Exists(fullPath))
                 {
-                    fileStatus = "Success";
+                    fileStatus = "200";
                     fileContents = File.ReadAllText(fullPath);
                 }
                 else
@@ -89,6 +90,7 @@ namespace WebTextEditor
             var returnObject = new {
                 status = fileStatus,
                 description = fileContents
+                
             };
             //return object and serialize in on ASP.NET end
             return returnObject;
@@ -108,8 +110,8 @@ namespace WebTextEditor
                 // Save or overwrite file
                 File.WriteAllText(fullPath, textContent);
 
-                fileStatus = "Success";
-                description = "File saved successfully.";
+                fileStatus = "200";
+                description = "OK";
             }
             catch (Exception ex)
             {
@@ -123,6 +125,44 @@ namespace WebTextEditor
                 description = description
             };
             //return object and serialize in on ASP.NET end
+            return returnObject;
+        }
+
+        [WebMethod]
+        public static object saveNewFile(string fileName, string textContent)
+        {
+            string fileStatus;
+            string description;
+            string extension;
+            //validate file extension is there and supported
+            extension = Path.GetExtension(fileName);
+            if (extension == null || extension == string.Empty) 
+            { 
+                fileStatus = "Error";
+                description = "Unspported or incomplete file extension.";
+            } else
+            {
+                try
+                {
+                    string folderPath = HttpContext.Current.Server.MapPath("~/MyFiles/");
+                    string fullPath = Path.Combine(folderPath, fileName);
+
+                    File.WriteAllText(fullPath, textContent);
+
+                    fileStatus = "200";
+                    description = "OK";
+                }
+                catch (Exception ex)
+                {
+                    fileStatus = "500";
+                    description = "Internal Server Error: " + ex.Message;
+                }
+            }
+            var returnObject = new
+            {
+                status = fileStatus,
+                description = description
+            };
             return returnObject;
         }
     }

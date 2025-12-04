@@ -34,7 +34,8 @@
             </label>
             <button id="openFile" type="button" class="navBtn" onclick="openSelectedFile()">Open File</button>
             <button id="SaveBtn" type="button" class="navBtn" onclick="saveSelectedFile()">Save</button>
-            <button id="SaveAsBtn" type="button" class="navBtn">Save As</button>
+            <button id="SaveAsBtn" type="button" class="navBtn" onclick="SaveAsNewFile()">Save As</button>
+            <input type="text" id="newFileName" />
 
             <label id="statusBar">Welcome!</label>
         </div>
