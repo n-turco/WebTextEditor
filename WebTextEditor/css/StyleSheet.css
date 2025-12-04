@@ -61,7 +61,7 @@ h1 {
     font-style:italic;
 }
 
-.pageDivide {
+#pageDivide {
     width: 95%;
     margin: 20px auto;
 }

@@ -1,5 +1,4 @@
 ﻿<!--Nicholas Turco | student#: 9056530 | Assignment 5: JQUERY AND JSON BASED TEXT EDITOR -->
-
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="startPage.aspx.cs" Inherits="WebTextEditor.startPage" %>
 
 <!DOCTYPE html>
@@ -24,22 +23,22 @@
         <div class="navigationBar">
             <label class="description">
                 Select a Text file:
-            <select id="textFileList">
-                <option value="NoSelection">Select file</option>
-            </select>
+                <select id="textFileList">
+                    <option value="NoSelection">Select file</option>
+                </select>
             </label>
             <label class="description">
                 Current file:
-            <label id="labelFileName">Untitled</label>
+                <label id="labelFileName">Untitled</label>
             </label>
             <button id="openFile" type="button" class="navBtn" onclick="openSelectedFile()">Open File</button>
-            <button id="SaveBtn" type="button" class="navBtn" onclick="saveSelectedFile()">Save</button>
+            <button id="SaveBtn" type="button" class="navBtn">Save</button>
             <button id="SaveAsBtn" type="button" class="navBtn">Save As</button>
 
             <label id="statusBar">Welcome!</label>
         </div>
 
-        <hr id="pageDivide" />
+        <hr class="pageDivide" />
 
         <textarea id="notePad" placeholder="Enter your text here..."></textarea>
 
