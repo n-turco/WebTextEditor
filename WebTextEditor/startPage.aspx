@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="css/StyleSheet.css" />
 
-    <!-- jQuery -->
+    <!--jQuery -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="javaScript/commScript.js"></script>
 </head>
@@ -22,7 +22,7 @@
     <form id="textEditorForm" runat="server">
         <!--needed to enable page methods-->
         <asp:ScriptManager ID="ScriptManager" runat="server" EnablePageMethods="true" />
-
+        <!--navigation bar-->
         <div class="navigationBar">
             <label class="description">
                 Select a Text file:
@@ -45,7 +45,7 @@
         </div>
 
         <hr id="pageDivide" />
-
+        <!--text editor area-->
         <textarea cols="" rows="" id="notePad" placeholder="Enter your text here..."></textarea>
 
     </form>

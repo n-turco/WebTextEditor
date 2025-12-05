@@ -1,7 +1,6 @@
 ﻿/*Nicholas Turco | student#: 9056530 | Assignment 5: JQUERY AND JSON BASED TEXT EDITOR
 This is the css file that handles the styling of the web application.*/
 
-
 body {
     background-color: darkseagreen;
     margin: 0;
@@ -71,4 +70,5 @@ h1 {
 #pageDivide {
     width: 95%;
     margin: 20px auto;
+    color: rgb(51, 14, 6); 
 }
