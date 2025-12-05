@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿//Nicholas Turco | student#: 9056530 | Assignment 5: JQUERY AND JSON BASED TEXT EDITOR | This an ASP.NET version of a web based text editor.
+//This page contains the C# code on the server side that handles file management, it receives a JSON request from the client and performs the 
+//requested action. It will save the data to an existing file, a new file or send an existing file in JSON format back to the server.
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +14,7 @@ using System.Web.UI.WebControls;
 
 namespace WebTextEditor
 {
-    public partial class startPage : System.Web.UI.Page
+    public partial class StartPage : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,7 +32,7 @@ namespace WebTextEditor
             //path to the folder containing text files
             string folderPath = HttpContext.Current.Server.MapPath("~/MyFiles/");
             //supported extensions
-            string[] extensions = {"*.txt", "*.html", "*.htm", "*.csv", "*.xml", "*.log", "*.json", "*.js", "*.css", "*.doc", "*.docx" };
+            string[] extensions = {"*.txt", "*.html", "*.htm", "*.csv", "*.xml", "*.log", "*.json", "*.js", "*.css" };
 
             //list to hold all readable files
             List<string> files = new List<string>();
@@ -49,20 +52,18 @@ namespace WebTextEditor
             return files.ToArray();
         }
         //Method Name: ReadFile
-        //Description: This function builds the file path the the requested file
+        //Description: This function builds the file path the requested file
         //             It checks if the file exists, if it does it sets the status to success and saves the contents to a string
-        //             If the file does not exist, it returns a message indicating so with a status of 404 Not found
-        //             It puts the file status and file content in an object and returns it
+        //             If the file does not exist, it returns a message notifying the user
         //Parameters: string fileName - the name of the file to be opened
-        //Return: object - contains the status and content of the file
+        //Return: Serialized object - contains the status and content of the file
         [WebMethod]
-        public static object ReadFile(string fileName)
+        public static string ReadFile(string fileName)
         {
             string fileStatus;
             string folderPath;
             string fullPath;
             string fileContents;
-
 
             try
             {
@@ -73,30 +74,30 @@ namespace WebTextEditor
                 //check if file exists
                 if (File.Exists(fullPath))
                 {
-                    fileStatus = "200";
+                    fileStatus = "Success";
                     fileContents = File.ReadAllText(fullPath);
                 }
                 else
                 {
-                    fileStatus = "404 - Not Found";
-                    fileContents = "File does not exist.";
+                    fileStatus = "Failed";
+                    fileContents = "Not Available";
                 }
             }
             catch (Exception ex)
             {
                 fileStatus = "Exception";
-                fileContents = "ERROR: " + ex.Message;
+                fileContents = "Internal Server Error: " + ex.Message;
             }
-            var returnObject = new {
-                status = fileStatus,
-                description = fileContents
-                
-            };
-            //return object and serialize in on ASP.NET end
-            return returnObject;
+            //return serializd object as a JSON string
+            return JsonConvert.SerializeObject(new { status = fileStatus, description = fileContents });
         }
+        //Method Name: saveFile
+        //Description: This function builds the file path to where the file will be saved
+        //             It writes the contents to the file, if it does not exist it creates a new file            
+        //Parameters: string fileName - the name of the file to be opened
+        //Return: Serialized object - contains the status and content of the file
         [WebMethod]
-        public static object saveFile (string fileName, string textContent)
+        public static string SaveFile (string fileName, string textContent)
         {
             string fileStatus;
             string description;
@@ -107,29 +108,27 @@ namespace WebTextEditor
                 string folderPath = HttpContext.Current.Server.MapPath("~/MyFiles/");
                 string fullPath = Path.Combine(folderPath, fileName);
 
-                // Save or overwrite file
+                // Save to existing file or create a new one and save it
                 File.WriteAllText(fullPath, textContent);
 
-                fileStatus = "200";
-                description = "OK";
+                fileStatus = "Success";
+                description = "File Saved.";
             }
             catch (Exception ex)
             {
-                fileStatus = "Error";
-                description = "ERROR: " + ex.Message;
+                fileStatus = "Exception";
+                description = "Internal Server Error: " + ex.Message;
             }
-
-            var returnObject = new
-            {
-                status = fileStatus,
-                description = description
-            };
-            //return object and serialize in on ASP.NET end
-            return returnObject;
+            //return serializd object as a JSON string
+            return JsonConvert.SerializeObject(new { status = fileStatus, description });
         }
-
+        //Method Name: saveNewFile
+        //Description: This function builds the file path to where the file will be saved
+        //             It writes the contents to the file, if it does not exist it creates a new file            
+        //Parameters: string fileName - the name of the file to be opened
+        //Return: Serialized object - contains the status and content of the file
         [WebMethod]
-        public static object saveNewFile(string fileName, string textContent)
+        public static string SaveNewFile(string fileName, string textContent)
         {
             string fileStatus;
             string description;
@@ -137,33 +136,28 @@ namespace WebTextEditor
             //validate file extension is there and supported
             extension = Path.GetExtension(fileName);
             if (extension == null || extension == string.Empty) 
-            { 
-                fileStatus = "Error";
-                description = "Unspported or incomplete file extension.";
-            } else
             {
+                //set default file extension if user does not specify
+                fileName += ".txt";
+            }          
                 try
                 {
+                    //save new file to directory path
                     string folderPath = HttpContext.Current.Server.MapPath("~/MyFiles/");
                     string fullPath = Path.Combine(folderPath, fileName);
 
                     File.WriteAllText(fullPath, textContent);
 
-                    fileStatus = "200";
-                    description = "OK";
+                    fileStatus = "Success";
+                    description = "File saved.";
                 }
                 catch (Exception ex)
                 {
-                    fileStatus = "500";
+                    fileStatus = "Exception";
                     description = "Internal Server Error: " + ex.Message;
                 }
-            }
-            var returnObject = new
-            {
-                status = fileStatus,
-                description = description
-            };
-            return returnObject;
+            //return serializd object as a JSON string
+            return JsonConvert.SerializeObject(new { status = fileStatus, description });
         }
     }
 }

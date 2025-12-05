@@ -1,5 +1,6 @@
 ﻿//Nicholas Turco | student#: 9056530 | Assignment 5: JQUERY AND JSON BASED TEXT EDITOR | This an ASP.NET version of a web based text editor.
-//This page contains the css and jQuery code used to manage communication between the client and server.
+//This page contains the JavaScript/AJAX and jQuery code used to manage communication between the client and server. It converts the file name
+//and file content into a JSON format and sends it to the server for processing.
 
 //used for AJAX calls
 var jQueryXMLHttpRequest;
@@ -28,7 +29,7 @@ function loadFiles(files) {
         return;
     }
 
-    //add each .txt file name as an option
+    //add each file name as an option
     $.each(files, function (i, fileName) {
         select.append(`<option value="${fileName}">${fileName}</option>`);
     });
@@ -51,7 +52,7 @@ function openSelectedFile() {
         return;
     }
     //send AJAX request
-    $.ajax({
+    jQueryXMLHttpRequest = $.ajax({
         type: "POST",
         url: "startPage.aspx/ReadFile",
         //convert data to JSON
@@ -61,19 +62,20 @@ function openSelectedFile() {
         dataType: "json",
         
         success: function (data) {
-            //put the content of data.d in a variable
-            let response = data.d;         
-            document.getElementById("statusBar").innerText =
-                "File Loaded: " + response.status;
-            //put the content in the text box
-            document.getElementById("notePad").value = response.description;
-            
-            document.getElementById("labelFileName").innerText = fileName;
+            if (data != null && data.d != null) {
+                //put the content of data.d in a variable
+                var response = $.parseJSON(data.d);
+                document.getElementById("statusBar").innerText =
+                    "File Loaded: " + response.status;
+                //put the content in the text box
+                document.getElementById("notePad").value = response.description;
+
+                document.getElementById("labelFileName").innerText = fileName;
+            }
         },
         //display error if unable to load file
-        error: function (data) {
-            let response = data.d;
-            document.getElementById("statusBar").innerText = "Failed to load file." + response.description;
+        error: function () {
+            document.getElementById("statusBar").innerText = "File Status: File does not exist";
         }
     });
 }
@@ -92,46 +94,62 @@ function saveSelectedFile() {
         return;
     }
     var fileContent = document.getElementById("notePad").value;
-    $.ajax({
+    jQueryXMLHttpRequest = $.ajax({
         type: "POST",
-        url: "startPage.aspx/saveFile",
+        url: "startPage.aspx/SaveFile",
         data: JSON.stringify({ fileName: filename, textContent: fileContent }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
 
         success: function (data) {
-            let response = data.d;
-            document.getElementById("statusBar").innerText = "File successfully saved." + response.description;
+            if (data != null && data.d != null) {
+                var response = $.parseJSON(data.d);
+                document.getElementById("statusBar").innerText = "File Save: " + response.description;
+            }
+
         },
-        error: function (data) {
-            let response = data.d;
-            document.getElementById("statusBar").innerText = "Failed to save file." + response.description;
+        error: function () {
+            document.getElementById("statusBar").innerText = "File Save: " + response.description;
         }
     });
 }
+// Method Name: SaveAsNewFile
+// Description: This function executes with an onClick event (saveAs button)
+//              Retrieves the file name from the text box and the text content from the textarea.
+//              Sends both values to the server using an AJAX POST request in JSON format.
+//              Updates the status bar based on the server's response.
+// Parameters: None
+// Returns: void
 function SaveAsNewFile() {
     var newFileName = document.getElementById("newFileName").value;
     if (!newFileName || newFileName.trim() === "") {
         document.getElementById("statusBar").innerText = "File name cannot be blank.";
         return;
     }
-    
+    //check for extension and append default .txt
+    if (newFileName.lastIndexOf('.') === -1) {
+        newFileName += ".txt"; 
+    }
     var fileContent = document.getElementById("notePad").value;
-    $.ajax({
+    jQueryXMLHttpRequest = $.ajax({
         type: "POST",
-        url: "startPage.aspx/saveNewFile",
+        url: "startPage.aspx/SaveNewFile",
         data: JSON.stringify({ fileName: newFileName, textContent: fileContent }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
 
         success: function (data) {
-            let response = data.d;
-            document.getElementById("labelFileName").innerText = newFileName;
-            document.getElementById("statusBar").innerText = "File successfully saved." + response.description;
+            if (data != null && data.d != null) {
+                var response = $.parseJSON(data.d);
+                document.getElementById("labelFileName").innerText = newFileName;
+                document.getElementById("statusBar").innerText = "File Save: " + response.description;
+                document.getElementById("newFileName").value = "";
+                //refresh file list
+                $("#textFileList").append(`<option value="${newFileName}">${newFileName}</option>`);
+            }
         },
-        error: function (data) {
-            let response = data.d;
-            document.getElementById("statusBar").innerText = "Failed to save file." + response.description;
+        error: function () {
+            document.getElementById("statusBar").innerText = "File Status: " + response.description;
         }
     });
 }

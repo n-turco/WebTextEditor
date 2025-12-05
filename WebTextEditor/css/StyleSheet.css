@@ -1,4 +1,8 @@
-﻿body {
+﻿/*Nicholas Turco | student#: 9056530 | Assignment 5: JQUERY AND JSON BASED TEXT EDITOR
+This is the css file that handles the styling of the web application.*/
+
+
+body {
     background-color: darkseagreen;
     margin: 0;
     font-family: Arial, sans-serif;
@@ -39,7 +43,9 @@ h1 {
 #labelFileName {
     width: 200px;
     margin-left: 10px;
-    margin-right: 150px
+    margin-right: 150px;
+    font-size: 24px;
+    color: brown;
 }
 
 #textFileList {
@@ -59,7 +65,7 @@ h1 {
     width: 200px;
     margin: 100px;
     font-style:italic;
-
+    text-align: right;
 }
 
 #pageDivide {

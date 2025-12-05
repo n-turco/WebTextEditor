@@ -72,9 +72,6 @@
   <ItemGroup>
     <Content Include="css\StyleSheet.css" />
     <Content Include="javaScript\commScript.js" />
-    <Content Include="MyFiles\secondtest.txt" />
-    <Content Include="MyFiles\TextFile1.txt" />
-    <Content Include="MyFiles\website.html" />
     <Content Include="startPage.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -89,7 +86,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MyFiles\jsonfile.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -97,6 +93,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MyFiles\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

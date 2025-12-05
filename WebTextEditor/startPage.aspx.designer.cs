@@ -11,7 +11,7 @@ namespace WebTextEditor
 {
 
 
-    public partial class startPage
+    public partial class StartPage
     {
 
         /// <summary>
