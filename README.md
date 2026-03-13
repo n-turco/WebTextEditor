@@ -1,7 +1,10 @@
 WebTextEditor
+Overview:
+An ASP.NET web-based text editor designed for real-time content creation. This project focuses on bridging the gap between complex backend file management and a responsive web interface
 
-Designed and implemented a browser-based rich text editor using HTML, CSS, and JavaScript, demonstrating strong DOM manipulation and event-driven programming skills.
+Technical Features:
+Full-Stack Integration: Engineered the connection between the C# backend and the web front-end to facilitate seamless text editing
 
-Built formatting features such as text styling and content controls while maintaining clean separation between UI logic and document state.
+High Performance: Optimized client-side responsiveness while maintaining data reliability on the server side
 
-Applied responsive design principles and cross-browser testing to ensure consistent behavior and usability across environments.
+Technologies: ASP.NET, C#, JavaScript
