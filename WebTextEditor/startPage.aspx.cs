@@ -1,11 +1,14 @@
 ﻿//Nicholas Turco | student#: 9056530 | Assignment 5: JQUERY AND JSON BASED TEXT EDITOR | This an ASP.NET version of a web based text editor.
 //This page contains the C# code on the server side that handles file management, it receives a JSON request from the client and performs the 
 //requested action. It will save the data to an existing file, a new file or send an existing file in JSON format back to the server.
+using FileSignatures;
+using FileSignatures.Formats;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Services;
@@ -32,14 +35,15 @@ namespace WebTextEditor
             //path to the folder containing text files
             string folderPath = HttpContext.Current.Server.MapPath("~/MyFiles/");
             //supported extensions
-            string[] extensions = {"*.txt", "*.html", "*.htm", "*.csv", "*.xml", "*.log", "*.json", "*.js", "*.css" };
+            string[] allowedExtensions = {"*.txt", "*.html", "*.htm", "*.csv", "*.xml", "*.log", "*.json", "*.js", "*.css" };
+
 
             //list to hold all readable files
             List<string> files = new List<string>();
 
-            foreach (string ext in extensions)
+            foreach (string ext in allowedExtensions)
             {
-                //add all the files to the list
+                //add all the files to the list    
                 files.AddRange(Directory.GetFiles(folderPath, ext));
             }
 
@@ -74,23 +78,32 @@ namespace WebTextEditor
                 //check if file exists
                 if (File.Exists(fullPath))
                 {
-                    fileStatus = "Success";
-                    fileContents = File.ReadAllText(fullPath);
+                    if (!CheckFileSignature(fullPath))
+                    {
+                        fileStatus = "Failed";
+                        fileContents = "File is not a valid text file and cannot be opened.";
+                    }
+                    else
+                    {
+                        fileStatus = "Success";
+                        fileContents = File.ReadAllText(fullPath);
+                    }
                 }
                 else
                 {
                     fileStatus = "Failed";
-                    fileContents = "Not Available";
+                    fileContents = "File not Found";
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                fileStatus = "Exception";
-                fileContents = "Internal Server Error: " + ex.Message;
+                fileStatus = "Error";
+                fileContents = "Internal Server Error";
             }
             //return serializd object as a JSON string
             return JsonConvert.SerializeObject(new { status = fileStatus, description = fileContents });
         }
+
         //Method Name: saveFile
         //Description: This function builds the file path to where the file will be saved
         //             It writes the contents to the file, if it does not exist it creates a new file            
@@ -158,6 +171,30 @@ namespace WebTextEditor
                 }
             //return serializd object as a JSON string
             return JsonConvert.SerializeObject(new { status = fileStatus, description });
+        }
+        /// <summary>
+        /// This method checks the file signature of the specified file to determine if it is a valid text file or not. 
+        /// It uses the FileSignatures library to inspect the file format. Returns true if the file is a valid text file, false otherwise.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static bool CheckFileSignature(string fileName) 
+        {
+
+            FileFormatInspector inspector = new FileFormatInspector();
+            using (var stream = File.OpenRead(fileName))
+            {
+                var format = inspector.DetermineFileFormat(stream);
+                //if the format is not null, then it is a valid file type, this means that the file is not a text file and should not be opened in the editor
+                if (format != null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
     }
 }

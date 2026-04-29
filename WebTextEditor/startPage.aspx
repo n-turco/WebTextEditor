@@ -1,7 +1,9 @@
 ﻿<!--Nicholas Turco | student#: 9056530 | Assignment 5: JQUERY AND JSON BASED TEXT EDITOR 
     This is the client side UI where the user will navigate the web text editor. From here they can select files to open,
     save, save new files and edit file-->
-
+ 
+<!--This page uses JQuery to make AJAX calls to the server side code behind. The server side code will handle the file operations
+    and return the results back to the client side. The client side will then update the UI accordingly. -->
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="StartPage.aspx.cs" Inherits="WebTextEditor.StartPage" %>
 
 <!DOCTYPE html>
@@ -17,7 +19,7 @@
 </head>
 
 <body>
-    <h1>A-05 | Text Editor</h1>
+    <h1>Online Text Editor</h1>
 
     <form id="textEditorForm" runat="server">
         <!--needed to enable page methods-->
