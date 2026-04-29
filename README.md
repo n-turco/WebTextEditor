@@ -10,7 +10,7 @@ Web Text Editor is an ASP.NET web-based text editor designed for real-time conte
 - Full-stack integration between C# backend and web front-end
 - High-performance client-side responsiveness
 - Data reliability on the server side
-- Seamless file handling and persistence
+- File handling and persistence
 
 ## Technical Stack
 
